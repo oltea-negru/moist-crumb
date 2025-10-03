@@ -49,3 +49,6 @@ app.*.map.json
 
 # Tests
 lcov.info
+
+# Environment
+.env
