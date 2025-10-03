@@ -6,7 +6,7 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<WeatherData> _getWeather() async {
-    final weather = await WeatherApi.getWeather("London");
+    final weather = await WeatherApi().getWeather("London");
     print(weather);
     return weather;
   }

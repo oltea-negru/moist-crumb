@@ -22,7 +22,7 @@ WeatherData _$WeatherDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$WeatherData {
   String get city => throw _privateConstructorUsedError;
-  String get temperature => throw _privateConstructorUsedError;
+  int get temperature => throw _privateConstructorUsedError;
   String get conditionCode => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
 
@@ -43,12 +43,7 @@ abstract class $WeatherDataCopyWith<$Res> {
     $Res Function(WeatherData) then,
   ) = _$WeatherDataCopyWithImpl<$Res, WeatherData>;
   @useResult
-  $Res call({
-    String city,
-    String temperature,
-    String conditionCode,
-    String icon,
-  });
+  $Res call({String city, int temperature, String conditionCode, String icon});
 }
 
 /// @nodoc
@@ -80,7 +75,7 @@ class _$WeatherDataCopyWithImpl<$Res, $Val extends WeatherData>
             temperature: null == temperature
                 ? _value.temperature
                 : temperature // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as int,
             conditionCode: null == conditionCode
                 ? _value.conditionCode
                 : conditionCode // ignore: cast_nullable_to_non_nullable
@@ -104,12 +99,7 @@ abstract class _$$WeatherDataImplCopyWith<$Res>
   ) = __$$WeatherDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String city,
-    String temperature,
-    String conditionCode,
-    String icon,
-  });
+  $Res call({String city, int temperature, String conditionCode, String icon});
 }
 
 /// @nodoc
@@ -140,7 +130,7 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
         temperature: null == temperature
             ? _value.temperature
             : temperature // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as int,
         conditionCode: null == conditionCode
             ? _value.conditionCode
             : conditionCode // ignore: cast_nullable_to_non_nullable
@@ -170,7 +160,7 @@ class _$WeatherDataImpl implements _WeatherData {
   @override
   final String city;
   @override
-  final String temperature;
+  final int temperature;
   @override
   final String conditionCode;
   @override
@@ -216,7 +206,7 @@ class _$WeatherDataImpl implements _WeatherData {
 abstract class _WeatherData implements WeatherData {
   const factory _WeatherData({
     required final String city,
-    required final String temperature,
+    required final int temperature,
     required final String conditionCode,
     required final String icon,
   }) = _$WeatherDataImpl;
@@ -227,7 +217,7 @@ abstract class _WeatherData implements WeatherData {
   @override
   String get city;
   @override
-  String get temperature;
+  int get temperature;
   @override
   String get conditionCode;
   @override

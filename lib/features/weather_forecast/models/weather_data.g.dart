@@ -9,7 +9,7 @@ part of 'weather_data.dart';
 _$WeatherDataImpl _$$WeatherDataImplFromJson(Map<String, dynamic> json) =>
     _$WeatherDataImpl(
       city: json['city'] as String,
-      temperature: json['temperature'] as String,
+      temperature: (json['temperature'] as num).toInt(),
       conditionCode: json['conditionCode'] as String,
       icon: json['icon'] as String,
     );

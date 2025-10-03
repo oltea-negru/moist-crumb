@@ -1,15 +1,46 @@
+// lib/services/api/weather_api.dart (REFACTORED)
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:moist_crumb/services/api/errors.dart';
 import 'package:http/http.dart' as http;
 import 'package:moist_crumb/features/weather_forecast/models/weather_data.dart';
 
 class WeatherApi {
-  static String get baseUrl => dotenv.get('OPEN_WEATHER_API_BASE_URL');
-  static String get apiKey => dotenv.get('OPEN_WEATHER_API_KEY');
+  final http.Client client;
+  final String baseUrl;
+  final String apiKey;
 
-  static Future<WeatherData> getWeather(String city) async {
-    final response = await http.get(Uri.parse('$baseUrl?q=$city&appid=$apiKey'));
-    print(response.body);
-    return WeatherData.fromOpenWeatherJson(jsonDecode(response.body));
+  WeatherApi({http.Client? client, String? baseUrl, String? apiKey})
+    : client = client ?? http.Client(),
+      baseUrl = baseUrl ?? dotenv.get('OPEN_WEATHER_API_BASE_URL'),
+      apiKey = apiKey ?? dotenv.get('OPEN_WEATHER_API_KEY');
+
+  Future<WeatherData> getWeather(String city) async {
+    final uri = Uri.parse('$baseUrl?q=$city&appid=$apiKey&units=metric');
+
+    final response = await client.get(uri);
+
+    switch (response.statusCode) {
+      case 200:
+        try {
+          return WeatherData.fromOpenWeatherJson(jsonDecode(response.body));
+        } catch (e) {
+          throw WeatherDataFormatException('Failed to parse weather data: $e');
+        }
+      case 400:
+        throw InvalidApiKeyException(response.body);
+      case 401:
+        throw InvalidApiKeyException(response.body);
+      case 404:
+        throw CityNotFoundException(response.body);
+      case 429:
+        throw RateLimitExceededException(response.body);
+      default:
+        throw OpenWeatherAPIException(response.body);
+    }
   }
-} 
+
+  void dispose() {
+    client.close();
+  }
+}
