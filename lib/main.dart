@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moist_crumb/constants/theme/colors.dart';
-import 'package:moist_crumb/features/weather_forecast/views/pages/homepage.dart';
+import 'package:moist_crumb/features/weather_forecast/views/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
