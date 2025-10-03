@@ -8,7 +8,7 @@ class WeatherData with _$WeatherData {
   const factory WeatherData({
     required String city,
     required int temperature,
-    required String conditionCode,
+    required String condition,
     required String icon,
   }) = _WeatherData;
 
@@ -19,7 +19,7 @@ class WeatherData with _$WeatherData {
     {
       "city": json["name"],
       "temperature": (json["main"]["temp"]).round(), // round the temperature to the nearest integer
-      "conditionCode": json["weather"][0]["main"],
+        "condition": json["weather"][0]["description"],
       "icon": json["weather"][0]["icon"],
     }
   );

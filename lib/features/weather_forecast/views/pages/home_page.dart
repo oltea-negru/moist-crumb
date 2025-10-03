@@ -131,6 +131,12 @@ class _HomePageState extends State<HomePage> {
                                           width: width * 0.8,
                                           child: const Divider(),
                                         ),
+                                        Text(
+                                          weatherData.condition,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodyMedium,
+                                        ),
                                       ],
                                     ),
                                   ),
