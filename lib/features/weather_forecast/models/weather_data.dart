@@ -12,6 +12,8 @@ class WeatherData with _$WeatherData {
     required String icon,
   }) = _WeatherData;
 
+  const WeatherData._();
+
   factory WeatherData.fromJson(Map<String, dynamic> json) => _$WeatherDataFromJson(json);
   factory WeatherData.fromOpenWeatherJson(Map<String, dynamic> json) => _$WeatherDataFromJson(
     {
@@ -24,4 +26,6 @@ class WeatherData with _$WeatherData {
 
   @override
   Map<String, dynamic> toJson() => _$$WeatherDataImplToJson(this as _$WeatherDataImpl);
+
+  String? get iconUrl => 'https://openweathermap.org/img/wn/10d@2x.png';
 }
