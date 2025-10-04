@@ -4,6 +4,7 @@ import 'package:moist_crumb/features/weather_forecast/cubits/cubit/home_page_cub
 import 'package:moist_crumb/features/weather_forecast/views/widgets/search_bar/app_search_bar.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/forecast_card.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/forecast_error_card.dart';
+import 'package:moist_crumb/features/theme/widgets/theme_toggle_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    final controller = TextEditingController();
+  final controller = TextEditingController();
 
   @override
   void dispose() {
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -50,25 +51,23 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildAppBar() {
     return AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              title: const Row(children: [Text("Moist Crumb")]),
-              actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.light_mode)),
-              ],
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: const Row(children: [Text("Moist Crumb")]),
+      actions: const [ThemeToggleButton()],
     );
   }
 
   Widget _buildWeatherContent(double width, double height) {
     return BlocProvider<HomePageCubit>(
       create: (context) => HomePageCubit(),
-                child: BlocBuilder<HomePageCubit, HomePageState>(
-                  builder: (context, state) {
-                    return SafeArea(
-                      minimum: const EdgeInsets.all(16),
-                      child: Column(
-                        spacing: 16,
-                        children: [
+      child: BlocBuilder<HomePageCubit, HomePageState>(
+        builder: (context, state) {
+          return SafeArea(
+            minimum: const EdgeInsets.all(16),
+            child: Column(
+              spacing: 16,
+              children: [
                 _buildSearchBar(context),
                 _buildWeatherDisplay(context, state, width, height),
               ],
@@ -81,11 +80,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildSearchBar(BuildContext context) {
     return AppSearchBar(
-                            controller: controller,
-                            onSubmitted: (value) {
+      controller: controller,
+      onSubmitted: (value) {
         context.read<HomePageCubit>().getWeather(value);
-                              controller.clear();
-                            },
+        controller.clear();
+      },
     );
   }
 
@@ -96,9 +95,9 @@ class _HomePageState extends State<HomePage> {
     double height,
   ) {
     return BlocBuilder<HomePageCubit, HomePageState>(
-                            builder: (context, state) {
-                              return state.when(
-                                initial: () => const SizedBox.shrink(),
+      builder: (context, state) {
+        return state.when(
+          initial: () => const SizedBox.shrink(),
           loading: (city) =>
               const Expanded(child: Center(child: CircularProgressIndicator())),
           error: (city, error, previousData) => Expanded(
@@ -106,11 +105,11 @@ class _HomePageState extends State<HomePage> {
               errorMessage: error.defaultMessage,
               width: width,
             ),
-          ),  
-                                loaded: (city, weatherData) => Expanded(
+          ),
+          loaded: (city, weatherData) => Expanded(
             child: ForecastCard(
               weatherData: weatherData,
-                                    width: width,
+              width: width,
               height: height,
             ),
           ),
