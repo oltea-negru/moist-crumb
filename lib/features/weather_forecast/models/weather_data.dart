@@ -27,5 +27,5 @@ class WeatherData with _$WeatherData {
   @override
   Map<String, dynamic> toJson() => _$$WeatherDataImplToJson(this as _$WeatherDataImpl);
 
-  String? get iconUrl => 'https://openweathermap.org/img/wn/10d@2x.png';
+  String? get iconUrl => 'https://openweathermap.org/img/wn/$icon@4x.png';
 }
