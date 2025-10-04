@@ -23,7 +23,7 @@ WeatherData _$WeatherDataFromJson(Map<String, dynamic> json) {
 mixin _$WeatherData {
   String get city => throw _privateConstructorUsedError;
   int get temperature => throw _privateConstructorUsedError;
-  String get conditionCode => throw _privateConstructorUsedError;
+  String get condition => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
 
   /// Serializes this WeatherData to a JSON map.
@@ -43,7 +43,7 @@ abstract class $WeatherDataCopyWith<$Res> {
     $Res Function(WeatherData) then,
   ) = _$WeatherDataCopyWithImpl<$Res, WeatherData>;
   @useResult
-  $Res call({String city, int temperature, String conditionCode, String icon});
+  $Res call({String city, int temperature, String condition, String icon});
 }
 
 /// @nodoc
@@ -63,7 +63,7 @@ class _$WeatherDataCopyWithImpl<$Res, $Val extends WeatherData>
   $Res call({
     Object? city = null,
     Object? temperature = null,
-    Object? conditionCode = null,
+    Object? condition = null,
     Object? icon = null,
   }) {
     return _then(
@@ -76,9 +76,9 @@ class _$WeatherDataCopyWithImpl<$Res, $Val extends WeatherData>
                 ? _value.temperature
                 : temperature // ignore: cast_nullable_to_non_nullable
                       as int,
-            conditionCode: null == conditionCode
-                ? _value.conditionCode
-                : conditionCode // ignore: cast_nullable_to_non_nullable
+            condition: null == condition
+                ? _value.condition
+                : condition // ignore: cast_nullable_to_non_nullable
                       as String,
             icon: null == icon
                 ? _value.icon
@@ -99,7 +99,7 @@ abstract class _$$WeatherDataImplCopyWith<$Res>
   ) = __$$WeatherDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String city, int temperature, String conditionCode, String icon});
+  $Res call({String city, int temperature, String condition, String icon});
 }
 
 /// @nodoc
@@ -118,7 +118,7 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
   $Res call({
     Object? city = null,
     Object? temperature = null,
-    Object? conditionCode = null,
+    Object? condition = null,
     Object? icon = null,
   }) {
     return _then(
@@ -131,9 +131,9 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
             ? _value.temperature
             : temperature // ignore: cast_nullable_to_non_nullable
                   as int,
-        conditionCode: null == conditionCode
-            ? _value.conditionCode
-            : conditionCode // ignore: cast_nullable_to_non_nullable
+        condition: null == condition
+            ? _value.condition
+            : condition // ignore: cast_nullable_to_non_nullable
                   as String,
         icon: null == icon
             ? _value.icon
@@ -146,13 +146,13 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$WeatherDataImpl implements _WeatherData {
+class _$WeatherDataImpl extends _WeatherData {
   const _$WeatherDataImpl({
     required this.city,
     required this.temperature,
-    required this.conditionCode,
+    required this.condition,
     required this.icon,
-  });
+  }) : super._();
 
   factory _$WeatherDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$WeatherDataImplFromJson(json);
@@ -162,13 +162,13 @@ class _$WeatherDataImpl implements _WeatherData {
   @override
   final int temperature;
   @override
-  final String conditionCode;
+  final String condition;
   @override
   final String icon;
 
   @override
   String toString() {
-    return 'WeatherData(city: $city, temperature: $temperature, conditionCode: $conditionCode, icon: $icon)';
+    return 'WeatherData(city: $city, temperature: $temperature, condition: $condition, icon: $icon)';
   }
 
   @override
@@ -179,15 +179,15 @@ class _$WeatherDataImpl implements _WeatherData {
             (identical(other.city, city) || other.city == city) &&
             (identical(other.temperature, temperature) ||
                 other.temperature == temperature) &&
-            (identical(other.conditionCode, conditionCode) ||
-                other.conditionCode == conditionCode) &&
+            (identical(other.condition, condition) ||
+                other.condition == condition) &&
             (identical(other.icon, icon) || other.icon == icon));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, city, temperature, conditionCode, icon);
+      Object.hash(runtimeType, city, temperature, condition, icon);
 
   /// Create a copy of WeatherData
   /// with the given fields replaced by the non-null parameter values.
@@ -203,13 +203,14 @@ class _$WeatherDataImpl implements _WeatherData {
   }
 }
 
-abstract class _WeatherData implements WeatherData {
+abstract class _WeatherData extends WeatherData {
   const factory _WeatherData({
     required final String city,
     required final int temperature,
-    required final String conditionCode,
+    required final String condition,
     required final String icon,
   }) = _$WeatherDataImpl;
+  const _WeatherData._() : super._();
 
   factory _WeatherData.fromJson(Map<String, dynamic> json) =
       _$WeatherDataImpl.fromJson;
@@ -219,7 +220,7 @@ abstract class _WeatherData implements WeatherData {
   @override
   int get temperature;
   @override
-  String get conditionCode;
+  String get condition;
   @override
   String get icon;
 

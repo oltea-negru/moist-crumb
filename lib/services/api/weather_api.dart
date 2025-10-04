@@ -13,13 +13,24 @@ class WeatherApi {
   WeatherApi({http.Client? client, String? baseUrl, String? apiKey})
     : client = client ?? http.Client(),
       baseUrl = baseUrl ?? dotenv.get('OPEN_WEATHER_API_BASE_URL'),
-      apiKey = apiKey ?? dotenv.get('OPEN_WEATHER_API_KEY');
+      apiKey = apiKey ?? dotenv.get('OPEN_WEATHER_API_KEY') {
+    // Validate API key is loaded
+    if (this.apiKey.isEmpty) {
+      throw InvalidApiKeyException(
+        'API key is empty or not loaded from environment',
+      );
+    }
+    if (this.baseUrl.isEmpty) {
+      throw WeatherAPIException(
+        'Base URL is empty or not loaded from environment',
+      );
+    }
+  }
+
 
   Future<WeatherData> getWeather(String city) async {
     final uri = Uri.parse('$baseUrl?q=$city&appid=$apiKey&units=metric');
-
     final response = await client.get(uri);
-
     switch (response.statusCode) {
       case 200:
         try {
@@ -32,11 +43,11 @@ class WeatherApi {
       case 401:
         throw InvalidApiKeyException(response.body);
       case 404:
-        throw CityNotFoundException(response.body);
+        throw CityNotFoundException();
       case 429:
-        throw RateLimitExceededException(response.body);
+        throw RateLimitExceededException();
       default:
-        throw OpenWeatherAPIException(response.body);
+        throw OpenWeatherAPIException();
     }
   }
 
