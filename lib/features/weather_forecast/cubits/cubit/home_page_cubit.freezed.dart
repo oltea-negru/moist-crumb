@@ -24,7 +24,7 @@ mixin _$HomePageState {
     required TResult Function(String city, WeatherData weatherData) loaded,
     required TResult Function(
       String city,
-      String message,
+      WeatherAPIException exception,
       WeatherData? previousData,
     )
     error,
@@ -34,7 +34,11 @@ mixin _$HomePageState {
     TResult? Function()? initial,
     TResult? Function(String city)? loading,
     TResult? Function(String city, WeatherData weatherData)? loaded,
-    TResult? Function(String city, String message, WeatherData? previousData)?
+    TResult? Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -42,7 +46,11 @@ mixin _$HomePageState {
     TResult Function()? initial,
     TResult Function(String city)? loading,
     TResult Function(String city, WeatherData weatherData)? loaded,
-    TResult Function(String city, String message, WeatherData? previousData)?
+    TResult Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -141,7 +149,7 @@ class _$HomePageInitialStateImpl implements HomePageInitialState {
     required TResult Function(String city, WeatherData weatherData) loaded,
     required TResult Function(
       String city,
-      String message,
+      WeatherAPIException exception,
       WeatherData? previousData,
     )
     error,
@@ -155,7 +163,11 @@ class _$HomePageInitialStateImpl implements HomePageInitialState {
     TResult? Function()? initial,
     TResult? Function(String city)? loading,
     TResult? Function(String city, WeatherData weatherData)? loaded,
-    TResult? Function(String city, String message, WeatherData? previousData)?
+    TResult? Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
   }) {
     return initial?.call();
@@ -167,7 +179,11 @@ class _$HomePageInitialStateImpl implements HomePageInitialState {
     TResult Function()? initial,
     TResult Function(String city)? loading,
     TResult Function(String city, WeatherData weatherData)? loaded,
-    TResult Function(String city, String message, WeatherData? previousData)?
+    TResult Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
     required TResult orElse(),
   }) {
@@ -298,7 +314,7 @@ class _$HomePageLoadingStateImpl implements HomePageLoadingState {
     required TResult Function(String city, WeatherData weatherData) loaded,
     required TResult Function(
       String city,
-      String message,
+      WeatherAPIException exception,
       WeatherData? previousData,
     )
     error,
@@ -312,7 +328,11 @@ class _$HomePageLoadingStateImpl implements HomePageLoadingState {
     TResult? Function()? initial,
     TResult? Function(String city)? loading,
     TResult? Function(String city, WeatherData weatherData)? loaded,
-    TResult? Function(String city, String message, WeatherData? previousData)?
+    TResult? Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
   }) {
     return loading?.call(city);
@@ -324,7 +344,11 @@ class _$HomePageLoadingStateImpl implements HomePageLoadingState {
     TResult Function()? initial,
     TResult Function(String city)? loading,
     TResult Function(String city, WeatherData weatherData)? loaded,
-    TResult Function(String city, String message, WeatherData? previousData)?
+    TResult Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
     required TResult orElse(),
   }) {
@@ -483,7 +507,7 @@ class _$HomePageLoadedStateImpl implements HomePageLoadedState {
     required TResult Function(String city, WeatherData weatherData) loaded,
     required TResult Function(
       String city,
-      String message,
+      WeatherAPIException exception,
       WeatherData? previousData,
     )
     error,
@@ -497,7 +521,11 @@ class _$HomePageLoadedStateImpl implements HomePageLoadedState {
     TResult? Function()? initial,
     TResult? Function(String city)? loading,
     TResult? Function(String city, WeatherData weatherData)? loaded,
-    TResult? Function(String city, String message, WeatherData? previousData)?
+    TResult? Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
   }) {
     return loaded?.call(city, weatherData);
@@ -509,7 +537,11 @@ class _$HomePageLoadedStateImpl implements HomePageLoadedState {
     TResult Function()? initial,
     TResult Function(String city)? loading,
     TResult Function(String city, WeatherData weatherData)? loaded,
-    TResult Function(String city, String message, WeatherData? previousData)?
+    TResult Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
     required TResult orElse(),
   }) {
@@ -580,7 +612,11 @@ abstract class _$$HomePageErrorStateImplCopyWith<$Res> {
     $Res Function(_$HomePageErrorStateImpl) then,
   ) = __$$HomePageErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String city, String message, WeatherData? previousData});
+  $Res call({
+    String city,
+    WeatherAPIException exception,
+    WeatherData? previousData,
+  });
 
   $WeatherDataCopyWith<$Res>? get previousData;
 }
@@ -600,7 +636,7 @@ class __$$HomePageErrorStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? city = null,
-    Object? message = null,
+    Object? exception = null,
     Object? previousData = freezed,
   }) {
     return _then(
@@ -609,10 +645,10 @@ class __$$HomePageErrorStateImplCopyWithImpl<$Res>
             ? _value.city
             : city // ignore: cast_nullable_to_non_nullable
                   as String,
-        null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
+        null == exception
+            ? _value.exception
+            : exception // ignore: cast_nullable_to_non_nullable
+                  as WeatherAPIException,
         freezed == previousData
             ? _value.previousData
             : previousData // ignore: cast_nullable_to_non_nullable
@@ -639,18 +675,18 @@ class __$$HomePageErrorStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomePageErrorStateImpl implements HomePageErrorState {
-  const _$HomePageErrorStateImpl(this.city, this.message, this.previousData);
+  const _$HomePageErrorStateImpl(this.city, this.exception, this.previousData);
 
   @override
   final String city;
   @override
-  final String message;
+  final WeatherAPIException exception;
   @override
   final WeatherData? previousData;
 
   @override
   String toString() {
-    return 'HomePageState.error(city: $city, message: $message, previousData: $previousData)';
+    return 'HomePageState.error(city: $city, exception: $exception, previousData: $previousData)';
   }
 
   @override
@@ -659,13 +695,14 @@ class _$HomePageErrorStateImpl implements HomePageErrorState {
         (other.runtimeType == runtimeType &&
             other is _$HomePageErrorStateImpl &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.message, message) || other.message == message) &&
+            (identical(other.exception, exception) ||
+                other.exception == exception) &&
             (identical(other.previousData, previousData) ||
                 other.previousData == previousData));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, city, message, previousData);
+  int get hashCode => Object.hash(runtimeType, city, exception, previousData);
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
@@ -686,12 +723,12 @@ class _$HomePageErrorStateImpl implements HomePageErrorState {
     required TResult Function(String city, WeatherData weatherData) loaded,
     required TResult Function(
       String city,
-      String message,
+      WeatherAPIException exception,
       WeatherData? previousData,
     )
     error,
   }) {
-    return error(city, message, previousData);
+    return error(city, exception, previousData);
   }
 
   @override
@@ -700,10 +737,14 @@ class _$HomePageErrorStateImpl implements HomePageErrorState {
     TResult? Function()? initial,
     TResult? Function(String city)? loading,
     TResult? Function(String city, WeatherData weatherData)? loaded,
-    TResult? Function(String city, String message, WeatherData? previousData)?
+    TResult? Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
   }) {
-    return error?.call(city, message, previousData);
+    return error?.call(city, exception, previousData);
   }
 
   @override
@@ -712,12 +753,16 @@ class _$HomePageErrorStateImpl implements HomePageErrorState {
     TResult Function()? initial,
     TResult Function(String city)? loading,
     TResult Function(String city, WeatherData weatherData)? loaded,
-    TResult Function(String city, String message, WeatherData? previousData)?
+    TResult Function(
+      String city,
+      WeatherAPIException exception,
+      WeatherData? previousData,
+    )?
     error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(city, message, previousData);
+      return error(city, exception, previousData);
     }
     return orElse();
   }
@@ -763,12 +808,12 @@ class _$HomePageErrorStateImpl implements HomePageErrorState {
 abstract class HomePageErrorState implements HomePageState {
   const factory HomePageErrorState(
     final String city,
-    final String message,
+    final WeatherAPIException exception,
     final WeatherData? previousData,
   ) = _$HomePageErrorStateImpl;
 
   String get city;
-  String get message;
+  WeatherAPIException get exception;
   WeatherData? get previousData;
 
   /// Create a copy of HomePageState

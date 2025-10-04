@@ -168,7 +168,8 @@ void main() {
     });
 
     test('should include error message in exception', () async {
-      const errorMessage = 'Detailed error message';
+      const errorMessage =
+          'City not found. Please check your spelling and try again.';
       when(() => mockHttpClient.get(any())).thenAnswer(
         (_) async => http.Response(errorMessage, 404),
       );

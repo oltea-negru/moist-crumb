@@ -5,6 +5,10 @@ sealed class HomePageState with _$HomePageState {
   const factory HomePageState.initial() = HomePageInitialState;
   const factory HomePageState.loading(String city) = HomePageLoadingState;
   const factory HomePageState.loaded(String city, WeatherData weatherData) = HomePageLoadedState;
-  const factory HomePageState.error(String city, String message, WeatherData? previousData) = HomePageErrorState;
+  const factory HomePageState.error(
+    String city,
+    WeatherAPIException exception,
+    WeatherData? previousData,
+  ) = HomePageErrorState;
 }
 

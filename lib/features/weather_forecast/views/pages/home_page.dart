@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moist_crumb/features/weather_forecast/cubits/cubit/home_page_cubit.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/search_bar/app_search_bar.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/forecast_card.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/forecast_error_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,9 +16,16 @@ class _HomePageState extends State<HomePage> {
     final controller = TextEditingController();
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -30,20 +40,28 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           children: [
-            AppBar(
+            _buildAppBar(),
+            Expanded(child: _buildWeatherContent(width, height)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
               title: const Row(children: [Text("Moist Crumb")]),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.light_mode),
-                ),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.light_mode)),
               ],
-            ),
-            Expanded(
-              child: BlocProvider(
-                create: (context) => HomePageCubit(),
+    );
+  }
+
+  Widget _buildWeatherContent(double width, double height) {
+    return BlocProvider<HomePageCubit>(
+      create: (context) => HomePageCubit(),
                 child: BlocBuilder<HomePageCubit, HomePageState>(
                   builder: (context, state) {
                     return SafeArea(
@@ -51,109 +69,53 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         spacing: 16,
                         children: [
-                          SearchBar(
-                            elevation: WidgetStateProperty.all(0),
-                            hintText: 'Search for a city',
+                _buildSearchBar(context),
+                _buildWeatherDisplay(context, state, width, height),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(BuildContext context) {
+    return AppSearchBar(
                             controller: controller,
                             onSubmitted: (value) {
-                              context.read<HomePageCubit>().getWeather(
-                                controller.text,
-                              );
+        context.read<HomePageCubit>().getWeather(value);
                               controller.clear();
                             },
-                            trailing: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.location_on),
-                              ),
-                            ],
-                          ),
-                          BlocBuilder<HomePageCubit, HomePageState>(
+    );
+  }
+
+  Widget _buildWeatherDisplay(
+    BuildContext context,
+    HomePageState state,
+    double width,
+    double height,
+  ) {
+    return BlocBuilder<HomePageCubit, HomePageState>(
                             builder: (context, state) {
                               return state.when(
                                 initial: () => const SizedBox.shrink(),
-                                loading: (city) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                error: (city, message, previousData) =>
-                                    Text(message),
-                                loaded: (city, weatherData) => Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.5,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.8,
-                                          ),
-                                          blurRadius: 30,
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(18),
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                          255,
-                                          237,
-                                          241,
-                                          250,
-                                        ),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    width: width,
-                                    child: Column(
-                                      spacing: 16,
-                                      children: [
-                                        Text(
-                                          weatherData.city,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleLarge,
-                                        ),
-                                        weatherData.iconUrl != null
-                                            ? Image.network(
-                                                weatherData.iconUrl!,
-                                                width: 80,
-                                                height: 80,
-                                                fit: BoxFit.cover,
-                                                // You can add loading/error builders if you wish
-                                              )
-                                            : const SizedBox.shrink(),
-                                        Text(
-                                          weatherData.temperature.toString(),
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.headlineLarge,
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.8,
-                                          child: const Divider(),
-                                        ),
-                                        Text(
-                                          weatherData.condition,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodyMedium,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+          loading: (city) =>
+              const Expanded(child: Center(child: CircularProgressIndicator())),
+          error: (city, error, previousData) => Expanded(
+            child: ForecastErrorCard(
+              errorMessage: error.defaultMessage,
+              width: width,
             ),
-          ],
-        ),
-      ),
+          ),  
+                                loaded: (city, weatherData) => Expanded(
+            child: ForecastCard(
+              weatherData: weatherData,
+                                    width: width,
+              height: height,
+            ),
+          ),
+        );
+      },
     );
   }
 }

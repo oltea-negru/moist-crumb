@@ -31,3 +31,10 @@ class RateLimitExceededException extends WeatherAPIException {
 class OpenWeatherAPIException extends WeatherAPIException {
   OpenWeatherAPIException([super.defaultMessage = "Our third party API is currently unavailable. Come back later!"]);
 }
+
+class WeatherApiInitializationException extends WeatherAPIException {
+  WeatherApiInitializationException([
+    super.defaultMessage =
+        "Failed to initialize weather service. Please check your API configuration.",
+  ]);
+}

@@ -30,9 +30,7 @@ class WeatherApi {
 
   Future<WeatherData> getWeather(String city) async {
     final uri = Uri.parse('$baseUrl?q=$city&appid=$apiKey&units=metric');
-    print('uri: $uri');
     final response = await client.get(uri);
-    print('response: ${response.body}');
     switch (response.statusCode) {
       case 200:
         try {
@@ -45,11 +43,11 @@ class WeatherApi {
       case 401:
         throw InvalidApiKeyException(response.body);
       case 404:
-        throw CityNotFoundException(response.body);
+        throw CityNotFoundException();
       case 429:
-        throw RateLimitExceededException(response.body);
+        throw RateLimitExceededException();
       default:
-        throw OpenWeatherAPIException(response.body);
+        throw OpenWeatherAPIException();
     }
   }
 
