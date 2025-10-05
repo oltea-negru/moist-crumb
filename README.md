@@ -89,6 +89,7 @@ fvm flutter test
 - Consistent animations for transitions and weather effects
 - Better empty state on first launch 
 - (Goes wihout saying but) More test coverage
+- Create a more cohesive theme and extract hard coded values of color and padding into a centralised format 
 
 #### Additional functionalities
 - OpenWheather provides a lot more data that the few fields shown above. It could be extended to show country, wind speed etc.
