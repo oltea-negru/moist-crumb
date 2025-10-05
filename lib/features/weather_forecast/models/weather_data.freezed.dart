@@ -25,6 +25,7 @@ mixin _$WeatherData {
   int get temperature => throw _privateConstructorUsedError;
   String get condition => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
+  int get weatherCode => throw _privateConstructorUsedError;
 
   /// Serializes this WeatherData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +44,13 @@ abstract class $WeatherDataCopyWith<$Res> {
     $Res Function(WeatherData) then,
   ) = _$WeatherDataCopyWithImpl<$Res, WeatherData>;
   @useResult
-  $Res call({String city, int temperature, String condition, String icon});
+  $Res call({
+    String city,
+    int temperature,
+    String condition,
+    String icon,
+    int weatherCode,
+  });
 }
 
 /// @nodoc
@@ -65,6 +72,7 @@ class _$WeatherDataCopyWithImpl<$Res, $Val extends WeatherData>
     Object? temperature = null,
     Object? condition = null,
     Object? icon = null,
+    Object? weatherCode = null,
   }) {
     return _then(
       _value.copyWith(
@@ -84,6 +92,10 @@ class _$WeatherDataCopyWithImpl<$Res, $Val extends WeatherData>
                 ? _value.icon
                 : icon // ignore: cast_nullable_to_non_nullable
                       as String,
+            weatherCode: null == weatherCode
+                ? _value.weatherCode
+                : weatherCode // ignore: cast_nullable_to_non_nullable
+                      as int,
           )
           as $Val,
     );
@@ -99,7 +111,13 @@ abstract class _$$WeatherDataImplCopyWith<$Res>
   ) = __$$WeatherDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String city, int temperature, String condition, String icon});
+  $Res call({
+    String city,
+    int temperature,
+    String condition,
+    String icon,
+    int weatherCode,
+  });
 }
 
 /// @nodoc
@@ -120,6 +138,7 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
     Object? temperature = null,
     Object? condition = null,
     Object? icon = null,
+    Object? weatherCode = null,
   }) {
     return _then(
       _$WeatherDataImpl(
@@ -139,6 +158,10 @@ class __$$WeatherDataImplCopyWithImpl<$Res>
             ? _value.icon
             : icon // ignore: cast_nullable_to_non_nullable
                   as String,
+        weatherCode: null == weatherCode
+            ? _value.weatherCode
+            : weatherCode // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -152,6 +175,7 @@ class _$WeatherDataImpl extends _WeatherData {
     required this.temperature,
     required this.condition,
     required this.icon,
+    required this.weatherCode,
   }) : super._();
 
   factory _$WeatherDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -165,10 +189,12 @@ class _$WeatherDataImpl extends _WeatherData {
   final String condition;
   @override
   final String icon;
+  @override
+  final int weatherCode;
 
   @override
   String toString() {
-    return 'WeatherData(city: $city, temperature: $temperature, condition: $condition, icon: $icon)';
+    return 'WeatherData(city: $city, temperature: $temperature, condition: $condition, icon: $icon, weatherCode: $weatherCode)';
   }
 
   @override
@@ -181,13 +207,15 @@ class _$WeatherDataImpl extends _WeatherData {
                 other.temperature == temperature) &&
             (identical(other.condition, condition) ||
                 other.condition == condition) &&
-            (identical(other.icon, icon) || other.icon == icon));
+            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.weatherCode, weatherCode) ||
+                other.weatherCode == weatherCode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, city, temperature, condition, icon);
+      Object.hash(runtimeType, city, temperature, condition, icon, weatherCode);
 
   /// Create a copy of WeatherData
   /// with the given fields replaced by the non-null parameter values.
@@ -209,6 +237,7 @@ abstract class _WeatherData extends WeatherData {
     required final int temperature,
     required final String condition,
     required final String icon,
+    required final int weatherCode,
   }) = _$WeatherDataImpl;
   const _WeatherData._() : super._();
 
@@ -223,6 +252,8 @@ abstract class _WeatherData extends WeatherData {
   String get condition;
   @override
   String get icon;
+  @override
+  int get weatherCode;
 
   /// Create a copy of WeatherData
   /// with the given fields replaced by the non-null parameter values.

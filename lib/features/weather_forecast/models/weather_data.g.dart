@@ -12,6 +12,7 @@ _$WeatherDataImpl _$$WeatherDataImplFromJson(Map<String, dynamic> json) =>
       temperature: (json['temperature'] as num).toInt(),
       condition: json['condition'] as String,
       icon: json['icon'] as String,
+      weatherCode: (json['weatherCode'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$WeatherDataImplToJson(_$WeatherDataImpl instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$WeatherDataImplToJson(_$WeatherDataImpl instance) =>
       'temperature': instance.temperature,
       'condition': instance.condition,
       'icon': instance.icon,
+      'weatherCode': instance.weatherCode,
     };
