@@ -14,7 +14,7 @@ class TemperatureDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Text(
-      temperature.toString(),
+      '${temperature.toString()}°',
       style: theme.textTheme.headlineLarge?.copyWith(
         fontSize: fontSize,
         color: theme.colorScheme.onSurface,

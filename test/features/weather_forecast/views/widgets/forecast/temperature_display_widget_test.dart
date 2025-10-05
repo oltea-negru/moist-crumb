@@ -19,9 +19,9 @@ void main() {
         ),
       );
 
-      expect(find.text('25'), findsOneWidget);
+      expect(find.text('25°'), findsOneWidget);
       
-      final textWidget = tester.widget<Text>(find.text('25'));
+      final textWidget = tester.widget<Text>(find.text('25°'));
       expect(textWidget.style?.fontSize, fontSize);
     });
   });
