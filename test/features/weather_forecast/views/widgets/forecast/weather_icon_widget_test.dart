@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/weather_icon.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast_card/weather_icon.dart';
 
 void main() {
   group('WeatherIcon', () {
