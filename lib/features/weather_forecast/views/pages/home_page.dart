@@ -4,15 +4,30 @@ import 'package:moist_crumb/features/weather_forecast/cubits/cubit/home_page_cub
 import 'package:moist_crumb/features/weather_forecast/views/widgets/weather_body/weather_body.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/weather_effects/weather_backgrond.dart'; // Import the weather background file
 import 'package:moist_crumb/features/weather_forecast/views/widgets/home_page_app_bar/home_page_app_bar.dart';
+import 'package:moist_crumb/services/api/weather_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override 
+  @override  
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomePageCubit(),
-      child: const HomePageContent(),
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox.shrink();
+        }
+
+        final sharedPreferences = snapshot.data!;
+        return BlocProvider(
+          create: (context) => HomePageCubit(
+            weatherApi: WeatherApi(),
+            sharedPreferences: sharedPreferences,
+          ),
+          child: const HomePageContent(),
+        );
+      },
     );
   }
 }

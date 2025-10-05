@@ -3,20 +3,31 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:moist_crumb/features/weather_forecast/models/weather_data.dart';
 import 'package:moist_crumb/services/api/errors.dart';
 import 'package:moist_crumb/services/api/weather_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'home_page_state.dart';
 part 'home_page_cubit.freezed.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
-  WeatherApi? _weatherApi;
+  final WeatherApi weatherApi;
+  final SharedPreferences sharedPreferences;
+  static const String lastCityKey = 'last_city';
 
-  HomePageCubit() : super(const HomePageState.initial()) {
+  HomePageCubit({
+    required this.weatherApi,
+    required this.sharedPreferences,
+  }) : super(const HomePageState.initial()) {
     _initialize();
   }
 
   Future<void> _initialize() async {
     try {
-      _weatherApi = WeatherApi();
+      final lastCity = sharedPreferences.getString(lastCityKey);
+      if (lastCity != null && lastCity.isNotEmpty) {
+        await getWeather(lastCity);
+      } else {
+        emit(const HomePageState.initial());
+      }
     } catch (e) {
       emit(HomePageState.error('', WeatherApiInitializationException(), null));
     }
@@ -24,9 +35,9 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   Future<void> getWeather(String city) async {
     emit(HomePageState.loading(city));
-
     try {
-      final weather = await _weatherApi!.getWeather(city);
+      await sharedPreferences.setString(lastCityKey, city);
+      final weather = await weatherApi.getWeather(city);
       emit(HomePageState.loaded(city, weather));
     } on WeatherAPIException catch (e) {
       emit(HomePageState.error(city, e, null));
