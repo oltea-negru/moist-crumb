@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moist_crumb/features/theme/widgets/theme_toggle_button.dart';
+import 'package:moist_crumb/utils/responsive.dart';
 
 class HomePageAppBar extends StatelessWidget {
   const HomePageAppBar({super.key});
@@ -16,14 +17,15 @@ class HomePageAppBar extends StatelessWidget {
             builder: (context) {
               final isLight = Theme.of(context).brightness == Brightness.light;
               return Container(
-                padding: const EdgeInsets.symmetric(
+                padding: Responsive.insetsSymmetric(
+                  context,
                   horizontal: 12,
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
                   color: (isLight ? Colors.white : Colors.black).withAlpha(128),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(Responsive.radius(context, 10)),
                   ),
                 ),
                 child: Text(
