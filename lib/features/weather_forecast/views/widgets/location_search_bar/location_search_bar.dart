@@ -7,17 +7,22 @@ class LocationSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SearchBar(
       elevation: WidgetStateProperty.all(0),
+      backgroundColor: WidgetStateProperty.all(
+        theme.colorScheme.surfaceContainer,
+      ),
       hintText: 'Search for a city',
       controller: controller,
       onSubmitted: onSubmitted,
-      trailing: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.location_on),
+      trailing: const [
+        Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: Icon(Icons.location_on),
         ),
       ],
+      
     );
   }
 }
