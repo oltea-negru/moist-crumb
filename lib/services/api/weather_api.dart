@@ -1,5 +1,7 @@
 // lib/services/api/weather_api.dart (REFACTORED)
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moist_crumb/services/api/errors.dart';
 import 'package:http/http.dart' as http;
@@ -30,24 +32,37 @@ class WeatherApi {
 
   Future<WeatherData> getWeather(String city) async {
     final uri = Uri.parse('$baseUrl?q=$city&appid=$apiKey&units=metric');
-    final response = await client.get(uri);
-    switch (response.statusCode) {
-      case 200:
-        try {
-          return WeatherData.fromOpenWeatherJson(jsonDecode(response.body));
-        } catch (e) {
-          throw WeatherDataFormatException('Failed to parse weather data: $e');
-        }
-      case 400:
-        throw InvalidApiKeyException(response.body);
-      case 401:
-        throw InvalidApiKeyException(response.body);
-      case 404:
-        throw CityNotFoundException();
-      case 429:
-        throw RateLimitExceededException();
-      default:
-        throw OpenWeatherAPIException();
+    try {
+      final response = await client
+          .get(uri)
+          .timeout(const Duration(seconds: 10));
+
+      switch (response.statusCode) {
+        case 200:
+          try {
+            return WeatherData.fromOpenWeatherJson(jsonDecode(response.body));
+          } catch (e) {
+            throw WeatherDataFormatException(
+              'Failed to parse weather data: $e',
+            );
+          }
+        case 400:
+          throw InvalidApiKeyException(response.body);
+        case 401:
+          throw InvalidApiKeyException(response.body);
+        case 404:
+          throw CityNotFoundException();
+        case 429:
+          throw RateLimitExceededException();
+        default:
+          throw OpenWeatherAPIException();
+      }
+    } on TimeoutException {
+      throw NetworkException();
+    } on SocketException {
+      throw NetworkException();
+    } on http.ClientException {
+      throw NetworkException();
     }
   }
 

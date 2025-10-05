@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moist_crumb/services/api/errors.dart';
+import 'package:moist_crumb/utils/responsive.dart';
 
 class ForecastErrorCard extends StatelessWidget {
   final WeatherAPIException error;
@@ -17,9 +18,9 @@ class ForecastErrorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.insetsAll(context, 24),
       child: Column(
-        spacing: 24,
+        spacing: Responsive.scale(context, 24),
         children: [
           ErrorIcon(key: ValueKey(error.runtimeType), error: error),
           ErrorMessage(
@@ -44,12 +45,12 @@ class ErrorIcon extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: Responsive.insetsAll(context, 8),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: Responsive.insetsAll(context, 20),
         child: SvgPicture.asset(
           ErrorAssetMapper.assetForError(error),
-          height: 100,
+          height: Responsive.vs(context, 100),
           colorFilter: ColorFilter.mode(
             theme.colorScheme.error,
             BlendMode.srcIn,
@@ -70,15 +71,19 @@ class ErrorMessage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: Responsive.insetsSymmetric(
+        context,
+        horizontal: 20,
+        vertical: 18,
+      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(Responsive.radius(context, 14)),
         color: theme.colorScheme.secondaryContainer,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: 16,
+        spacing: Responsive.scale(context, 16),
         children: [
           Text(
             ErrorTitleMapper.titleForError(error, city),

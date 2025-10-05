@@ -71,16 +71,13 @@ class WeatherBackgroundConfig {
               : [0xFF78909C, 0xFFB0BEC5],
           effectTypes: [WeatherEffectType.atmosphere],
         );
-
       case 800: // Clear Sky
         return WeatherBackgroundConfig(
           gradientColorValues: isDarkMode
-              ? [0xFFFFD54F, 0xFFFBC02D]
-              : [0xFFFFF3E0, 0xFFFFE0B2],
+              ? [0xFF4E342E, 0xFF3E2723]
+              : [0xFFFFE082, 0xFFFFD54F],
           effectTypes: [WeatherEffectType.clear],
         );
-        ;
-
       case >= 801 && <= 804: // Clouds
         return WeatherBackgroundConfig(
           gradientColorValues: isDarkMode

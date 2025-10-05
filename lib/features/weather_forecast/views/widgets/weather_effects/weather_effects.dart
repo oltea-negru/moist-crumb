@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moist_crumb/features/weather_forecast/models/weather_background_config.dart';
+import 'package:moist_crumb/utils/responsive.dart';
 import 'dart:math' as math;
 
 
@@ -118,8 +119,8 @@ class _RainDropState extends State<RainDrop>
           left: (screenWidth * (leftPosition / 100)).clamp(0.0, screenWidth - 5),
           top: -20 + (screenHeight + 40) * yPos,
           child: Container(
-            width: 2,
-            height: 25,
+            width: Responsive.hs(context, 2),
+            height: Responsive.vs(context, 25),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -130,7 +131,9 @@ class _RainDropState extends State<RainDrop>
                   Colors.white.withValues(alpha: 0.0),
                 ],
               ),
-              borderRadius: BorderRadius.circular(1),
+              borderRadius: BorderRadius.circular(
+                Responsive.radius(context, 1),
+              ),
             ),
           ),
         );
@@ -381,8 +384,8 @@ class _SnowflakeState extends State<Snowflake>
           left: (screenWidth * (leftPosition / 100)) + (wave * drift),
           top: screenHeight * _controller.value,
           child: Container(
-            width: size,
-            height: size,
+            width: Responsive.scale(context, size),
+            height: Responsive.scale(context, size),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.9),
               shape: BoxShape.circle,
