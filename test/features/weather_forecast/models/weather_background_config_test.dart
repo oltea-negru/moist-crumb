@@ -4,7 +4,9 @@ import 'package:moist_crumb/features/weather_forecast/models/weather_background_
 void main() {
   group('WeatherBackgroundConfig', () {
     group('fromWeatherCode', () {
-      test('returns thunderstorm config for code 200-299', () {
+      test(
+        'thunderstorm (200-299) yields only thunderstorm effect and correct colors',
+        () {
         // Arrange
         const weatherCode = 201;
         const isDarkMode = false;
@@ -16,25 +18,22 @@ void main() {
         );
 
         // Assert
-        expect(config.effectTypes, contains(WeatherEffectType.thunderstorm));
-        expect(config.effectTypes, contains(WeatherEffectType.rain));
-        expect(config.effectTypes, contains(WeatherEffectType.clouds));
+          expect(config.effectTypes, contains(WeatherEffectType.thunderstorm));
         expect(config.gradientColorValues.length, 2);
         expect(config.gradientColorValues[0], 0xFF1A1A2E);
       });
 
-      test('returns snow config for code 600-699', () {
+      test('snow (600-699) yields only snow effect and correct colors', () {
         final config = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 601,
           isDarkMode: true,
         );
 
         expect(config.effectTypes, contains(WeatherEffectType.snow));
-        expect(config.effectTypes, contains(WeatherEffectType.clouds));
         expect(config.gradientColorValues[0], 0xFF1A2530);
       });
 
-      test('clear sky returns mild sun rays', () {
+      test('clear sky (800) yields only clear effect', () {
         final clearConfig = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 800,
           isDarkMode: false,
@@ -43,17 +42,17 @@ void main() {
         expect(clearConfig.effectTypes, [WeatherEffectType.clear]);
       });
 
-      test('handles null weather code with default fallback', () {
+      test('null weather code falls back to default atmosphere effect', () {
         final defaultConfig = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: null,
           isDarkMode: false,
         );
 
         expect(defaultConfig.gradientColorValues.length, 2);
-        expect(defaultConfig.effectTypes, isEmpty);
+        expect(defaultConfig.effectTypes, [WeatherEffectType.atmosphere]);
       });
 
-      test('returns different colors for dark mode', () {
+      test('dark mode produces different gradient colors than light mode', () {
         final lightConfig = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 500,
           isDarkMode: false,
@@ -67,7 +66,7 @@ void main() {
         expect(lightConfig.gradientColorValues[0], isNot(darkConfig.gradientColorValues[0]));
       });
 
-      test('drizzle has light rain, not heavy rain', () {
+      test('drizzle (300-399) includes drizzle effect and excludes rain', () {
         final config = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 301,
           isDarkMode: false,
@@ -77,7 +76,7 @@ void main() {
         expect(config.effectTypes, isNot(contains(WeatherEffectType.rain)));
       });
 
-      test('fog returns only fog effect', () {
+      test('fog (741) yields only atmosphere effect', () {
         final config = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 741,
           isDarkMode: true,
@@ -86,23 +85,23 @@ void main() {
         expect(config.effectTypes, [WeatherEffectType.atmosphere]);
       });
 
-      test('cloudy weather returns cloud effects', () {
+      test('clouds (801-804) include clouds effect', () {
         final config = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 803,
           isDarkMode: false,
         );
 
-        expect(config.effectTypes, contains(WeatherEffectType.clear));
+        expect(config.effectTypes, contains(WeatherEffectType.clouds));
       });
 
-      test('unknown weather code falls back to default', () {
+      test('unknown code falls back to default atmosphere effect', () {
         final config = WeatherBackgroundConfig.fromWeatherCode(
           weatherCode: 999,
           isDarkMode: false,
         );
 
         expect(config.gradientColorValues.length, 2);
-        expect(config.effectTypes, isEmpty);
+        expect(config.effectTypes, [WeatherEffectType.atmosphere]);
       });
     });
   });

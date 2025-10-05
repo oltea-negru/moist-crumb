@@ -49,6 +49,7 @@ void main() {
           'main': 'Clear',
           'description': 'clear sky',
           'icon': '01d',
+          'id': 800,
         }
       ],
     };
