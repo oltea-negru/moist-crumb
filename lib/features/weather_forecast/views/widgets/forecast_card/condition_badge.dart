@@ -15,9 +15,7 @@ class ConditionBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest.withValues(
-          alpha: 0.6,
-        ),
+        color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(50),
       ),
       child: Text(

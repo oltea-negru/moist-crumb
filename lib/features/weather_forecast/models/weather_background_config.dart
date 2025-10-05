@@ -23,8 +23,12 @@ class WeatherBackgroundConfig {
     required bool isDarkMode,
   }) {
     if (weatherCode == null) {
-      // TODO: Handle this case.
-      throw Exception('Weather code is null');
+      return WeatherBackgroundConfig(
+        gradientColorValues: isDarkMode
+            ? [0xFF2C3539, 0xFF37474F]
+            : [0xFF78909C, 0xFFB0BEC5],
+        effectTypes: [WeatherEffectType.atmosphere],
+      );
     }
 
     switch (weatherCode) {
@@ -33,9 +37,7 @@ class WeatherBackgroundConfig {
           gradientColorValues: isDarkMode
               ? [0xFF000000, 0xFF0D0D1A]
               : [0xFF1A1A2E, 0xFF16213E],
-          effectTypes: [
-            WeatherEffectType.thunderstorm,
-          ],
+          effectTypes: [WeatherEffectType.thunderstorm],
         );
 
       case >= 300 && <= 399: // Drizzle
@@ -43,9 +45,7 @@ class WeatherBackgroundConfig {
           gradientColorValues: isDarkMode
               ? [0xFF1C262B, 0xFF263238]
               : [0xFF607D8B, 0xFF90A4AE],
-          effectTypes: [
-            WeatherEffectType.drizzle,
-          ],
+          effectTypes: [WeatherEffectType.drizzle],
         );
 
       case >= 500 && <= 599: // Rain
@@ -53,9 +53,7 @@ class WeatherBackgroundConfig {
           gradientColorValues: isDarkMode
               ? [0xFF0D1214, 0xFF1C262B]
               : [0xFF37474F, 0xFF546E7A],
-          effectTypes: [
-            WeatherEffectType.rain,
-          ],
+          effectTypes: [WeatherEffectType.rain],
         );
 
       case >= 600 && <= 699: // Snow
@@ -94,13 +92,9 @@ class WeatherBackgroundConfig {
       default:
         return WeatherBackgroundConfig(
           gradientColorValues: isDarkMode
-              ? (isDarkMode
-                    ? [0xFF1976D2, 0xFF2196F3]
-                    : [0xFF42A5F5, 0xFF64B5F6])
-              : (isDarkMode
-                    ? [0xFF0D47A1, 0xFF1565C0]
-                    : [0xFF1565C0, 0xFF2B6CB0]),
-          effectTypes: [],
+              ? [0xFF2C3539, 0xFF37474F]
+              : [0xFF78909C, 0xFFB0BEC5],
+          effectTypes: [WeatherEffectType.atmosphere],
         );
     }
   }

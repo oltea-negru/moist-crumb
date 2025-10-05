@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast/condition_badge.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast_card/condition_badge.dart';
 
 void main() {
   group('ConditionBadge', () {
