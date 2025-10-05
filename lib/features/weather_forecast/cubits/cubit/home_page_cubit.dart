@@ -9,20 +9,22 @@ part 'home_page_state.dart';
 part 'home_page_cubit.freezed.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
-  WeatherApi? _weatherApi;
-  static const _lastCityKey = 'last_city';
+  final WeatherApi weatherApi;
+  final SharedPreferences sharedPreferences;
+  static const String lastCityKey = 'last_city';
 
-  HomePageCubit() : super(const HomePageState.initial()) {
+  HomePageCubit({
+    required this.weatherApi,
+    required this.sharedPreferences,
+  }) : super(const HomePageState.initial()) {
     _initialize();
-  } 
+  }
 
   Future<void> _initialize() async {
     try {
-      _weatherApi = WeatherApi();
-      final prefs = await SharedPreferences.getInstance();
-      final lastCity = prefs.getString(_lastCityKey);
+      final lastCity = sharedPreferences.getString(lastCityKey);
       if (lastCity != null && lastCity.isNotEmpty) {
-        getWeather(lastCity);
+        await getWeather(lastCity);
       } else {
         emit(const HomePageState.initial());
       }
@@ -33,12 +35,9 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   Future<void> getWeather(String city) async {
     emit(HomePageState.loading(city));
-
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_lastCityKey, city);  
-
-      final weather = await _weatherApi!.getWeather(city);
+      await sharedPreferences.setString(lastCityKey, city);
+      final weather = await weatherApi.getWeather(city);
       emit(HomePageState.loaded(city, weather));
     } on WeatherAPIException catch (e) {
       emit(HomePageState.error(city, e, null));
