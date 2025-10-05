@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:moist_crumb/features/weather_forecast/models/weather_data.dart';
+import 'package:moist_crumb/utils/responsive.dart';
 import 'weather_icon.dart';
 import 'temperature_display.dart';
 import 'condition_badge.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moist_crumb/features/weather_forecast/cubits/cubit/home_page_cubit.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast_card/forecast_error_card.dart';
+import 'package:moist_crumb/features/weather_forecast/views/widgets/forecast_card/forecast_loading_card.dart';
 
 class ForecastCard extends StatelessWidget {
   @override
@@ -18,19 +20,13 @@ class ForecastCard extends StatelessWidget {
         return state.when(
           initial: () => const SizedBox.shrink(),
           loading: (city) =>
-              const Expanded(child: Center(child: CircularProgressIndicator())),
-          error: (city, error, previousData) => Expanded(
-            child: ForecastErrorCard(
-              city: city,
-              error: error,
-            ),
-          ),
-          loaded: (city, weatherData) => Expanded(
-            child: ForecastCardLoadedData(
-              weatherData: weatherData,
-              width: screenWidth,
-              height: screenHeight,
-            ),
+              ForecastLoadingSkeleton(width: screenWidth, height: screenHeight),
+          error: (city, error, previousData) =>
+              ForecastErrorCard(city: city, error: error),
+          loaded: (city, weatherData) => ForecastCardLoadedData(
+            weatherData: weatherData,
+            width: screenWidth,
+            height: screenHeight,
           ),
         );
       },
@@ -55,7 +51,7 @@ class ForecastCardLoadedData extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: Responsive.insetsAll(context, 24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -65,12 +61,12 @@ class ForecastCardLoadedData extends StatelessWidget {
             theme.colorScheme.surfaceContainer.withValues(alpha: 0.0),
           ],
         ),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(Responsive.radius(context, 18)),
       ),
       width: width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 16,
+        spacing: Responsive.scale(context, 16),
         children: [
           CityNameDisplay(city: weatherData.city),
           ForecastWeatherIcon(
