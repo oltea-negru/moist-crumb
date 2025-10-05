@@ -19,8 +19,7 @@ class ForecastCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -39,40 +38,77 @@ class ForecastCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         spacing: 16,
         children: [
-          _buildCityName(theme),
-          _buildWeatherIcon(),
-          _buildTemperature(screenHeight),
-          _buildConditionBadge(),
+          CityNameDisplay(city: weatherData.city),
+          ForecastWeatherIcon(
+            iconUrl: weatherData.iconUrl,
+            height: height * 0.3,
+          ),
+          ForecastTemperature(
+            temperature: weatherData.temperature,
+            height: height,
+          ),
+          ConditionBadge(condition: weatherData.condition),
         ],
       ),
     );
   }
+}
 
-  Widget _buildCityName(ThemeData theme) {
+class CityNameDisplay extends StatelessWidget {
+  final String city;
+
+  const CityNameDisplay({super.key, required this.city});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Text(
-      weatherData.city,
+      city,
       style: theme.textTheme.headlineLarge?.copyWith(
         color: theme.colorScheme.onSurface,
       ),
     );
   }
+}
 
-  Widget _buildWeatherIcon() {
-    if (weatherData.iconUrl == null) {
+class ForecastWeatherIcon extends StatelessWidget {
+  final String? iconUrl;
+  final double height;
+
+  const ForecastWeatherIcon({
+    super.key,
+    required this.iconUrl,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (iconUrl == null) {
       return const SizedBox.shrink();
     }
 
-    return WeatherIcon(iconUrl: weatherData.iconUrl!, height: height * 0.3);
+    return WeatherIcon(iconUrl: iconUrl!, height: height);
   }
+}
 
-  Widget _buildTemperature(double screenHeight) {
+class ForecastTemperature extends StatelessWidget {
+  final int temperature;
+  final double height;
+
+  const ForecastTemperature({
+    super.key,
+    required this.temperature,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return TemperatureDisplay(
-      temperature: weatherData.temperature,
+      temperature: temperature,
       fontSize: screenHeight * 0.1,
     );
-  }
-
-  Widget _buildConditionBadge() {
-    return ConditionBadge(condition: weatherData.condition);
   }
 }
