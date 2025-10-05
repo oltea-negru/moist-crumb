@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moist_crumb/features/weather_forecast/cubits/cubit/home_page_cubit.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/weather_body/weather_body.dart';
-import 'package:moist_crumb/features/theme/widgets/theme_toggle_button.dart';
 import 'package:moist_crumb/features/weather_forecast/views/widgets/weather_effects/weather_backgrond.dart'; // Import the weather background file
+import 'package:moist_crumb/features/weather_forecast/views/widgets/home_page_app_bar/home_page_app_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -25,6 +25,7 @@ class HomePageContent extends StatefulWidget {
 }
 
 class _HomePageContentState extends State<HomePageContent> {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomePageCubit, HomePageState>(
@@ -44,15 +45,10 @@ class _HomePageContentState extends State<HomePageContent> {
         return Scaffold(
           body: WeatherBackground(
             weatherCode: weatherCode,
-            child: Column(
+            child: const Column(
               children: [
-                AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  title: const Text("Moist Crumb"),
-                  actions: const [ThemeToggleButton()],
-                ),
-                const Expanded(child: WeatherBody()),
+                HomePageAppBar(),
+                Expanded(child: WeatherBody()),
               ],
             ),
           ),
