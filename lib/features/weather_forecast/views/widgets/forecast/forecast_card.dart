@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:moist_crumb/features/weather_forecast/models/weather_data.dart';
+import 'weather_icon.dart';
+import 'temperature_display.dart';
+import 'condition_badge.dart';
 
 class ForecastCard extends StatelessWidget {
   final WeatherData weatherData;
   final double width;
   final double height;
+
   const ForecastCard({
     super.key,
     required this.weatherData,
@@ -14,42 +18,97 @@ class ForecastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.5),
-        boxShadow: [
-          BoxShadow(color: Colors.white.withValues(alpha: 0.8), blurRadius: 30),
-        ],
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: const Color.fromARGB(255, 237, 241, 250),
-          width: 1,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.colorScheme.surfaceContainer,
+            theme.colorScheme.surfaceContainer.withValues(alpha: 0.0),
+          ],
         ),
+        borderRadius: BorderRadius.circular(18),
       ),
       width: width,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         spacing: 16,
         children: [
-          Text(weatherData.city, style: Theme.of(context).textTheme.titleLarge),
-          weatherData.iconUrl != null
-              ? Image.network(
-                  weatherData.iconUrl!,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                )
-              : const SizedBox.shrink(),
-          Text(
-            weatherData.temperature.toString(),
-            style: Theme.of(context).textTheme.headlineLarge,
+          CityNameDisplay(city: weatherData.city),
+          ForecastWeatherIcon(
+            iconUrl: weatherData.iconUrl,
+            height: height * 0.3,
           ),
-          SizedBox(width: width * 0.8, child: const Divider()),
-          Text(
-            weatherData.condition,
-            style: Theme.of(context).textTheme.bodyMedium,
+          ForecastTemperature(
+            temperature: weatherData.temperature,
+            height: height,
           ),
+          ConditionBadge(condition: weatherData.condition),
         ],
       ),
+    );
+  }
+}
+
+class CityNameDisplay extends StatelessWidget {
+  final String city;
+
+  const CityNameDisplay({super.key, required this.city});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Text(
+      city,
+      style: theme.textTheme.headlineLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
+      ),
+    );
+  }
+}
+
+class ForecastWeatherIcon extends StatelessWidget {
+  final String? iconUrl;
+  final double height;
+
+  const ForecastWeatherIcon({
+    super.key,
+    required this.iconUrl,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (iconUrl == null) {
+      return const SizedBox.shrink();
+    }
+
+    return WeatherIcon(iconUrl: iconUrl!, height: height);
+  }
+}
+
+class ForecastTemperature extends StatelessWidget {
+  final int temperature;
+  final double height;
+
+  const ForecastTemperature({
+    super.key,
+    required this.temperature,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return TemperatureDisplay(
+      temperature: temperature,
+      fontSize: screenHeight * 0.1,
     );
   }
 }

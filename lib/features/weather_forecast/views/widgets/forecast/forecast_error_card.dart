@@ -1,33 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:moist_crumb/services/api/errors.dart';
 
 class ForecastErrorCard extends StatelessWidget {
-  final String errorMessage;
-  final double width;
-  const ForecastErrorCard({super.key, required this.errorMessage, required this.width});
+  final WeatherAPIException error;
+  final VoidCallback? onRetry;
+  final String city;
+
+  const ForecastErrorCard({
+    super.key,
+    required this.error,
+    this.onRetry,
+    required this.city,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.5),
-        boxShadow: [
-          BoxShadow(color: Colors.white.withValues(alpha: 0.8), blurRadius: 30),
-        ],
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: const Color.fromARGB(255, 237, 241, 250),
-          width: 1,
-        ),
-      ),
-      width: width,
+      padding: const EdgeInsets.all(24),
       child: Column(
-        children: [       
-          SvgPicture.asset('assets/svgs/error.svg'),
-          Text(errorMessage, style: Theme.of(context).textTheme.bodyMedium),
+        spacing: 24,
+        children: [
+          ErrorIcon(key: ValueKey(error.runtimeType), error: error),
+          ErrorMessage(
+            key: ValueKey(ErrorTitleMapper.titleForError(error, city)),
+            error: error,
+            city: city,
+          ),
+          if (onRetry != null) ...[RetryButton(onRetry: onRetry!)],
         ],
       ),
     );
+  }
+}
+
+class ErrorIcon extends StatelessWidget {
+  final WeatherAPIException error;
+
+  const ErrorIcon({super.key, required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SvgPicture.asset(
+          ErrorAssetMapper.assetForError(error),
+          height: 100,
+          colorFilter: ColorFilter.mode(
+            theme.colorScheme.error,
+            BlendMode.srcIn,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ErrorMessage extends StatelessWidget {
+  final WeatherAPIException error;
+  final String city;
+  const ErrorMessage({super.key, required this.error, required this.city});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: theme.colorScheme.secondaryContainer,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 16,
+        children: [
+          Text(
+            ErrorTitleMapper.titleForError(error, city),
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.error,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            error.defaultMessage,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
+          ),
+        ],
+      ),
+      
+    );
+  }
+}
+
+class RetryButton extends StatelessWidget {
+  final VoidCallback onRetry;
+
+  const RetryButton({super.key, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.tonalIcon(
+      style: FilledButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      onPressed: onRetry,
+      icon: const Icon(Icons.refresh_rounded, size: 20),
+      label: const Text('Try Again'),
+    );
+  }
+}
+
+class ErrorTitleMapper {
+  static String titleForError(WeatherAPIException e, String city) {
+    return switch (e) {
+      CityNotFoundException() => 'Location Not Found: "$city"',
+      NetworkException() => 'Connection Issue',
+      RateLimitExceededException() => 'Too Many Requests',
+      InvalidApiKeyException() => 'Configuration Error',
+      OpenWeatherAPIException() => 'Service Unavailable',
+      WeatherDataFormatException() => 'Data Error',
+      WeatherApiInitializationException() => 'Initialization Failed',
+      _ => 'Something Went Wrong',
+    };
+  }
+}
+
+class ErrorAssetMapper {
+  static String assetForError(WeatherAPIException e) {
+    return switch (e) {
+      CityNotFoundException() => 'assets/svgs/not-found-error.svg',
+      NetworkException() => 'assets/svgs/network-error.svg',
+      RateLimitExceededException() => 'assets/svgs/rate-limit-error.svg',
+      InvalidApiKeyException() => 'assets/svgs/general-error.svg',
+      OpenWeatherAPIException() => 'assets/svgs/general-error.svg',
+      WeatherDataFormatException() => 'assets/svgs/general-error.svg',
+      WeatherApiInitializationException() => 'assets/svgs/general-error.svg',
+      _ => 'assets/svgs/general-error.svg',
+    };
   }
 }

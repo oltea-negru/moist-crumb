@@ -102,8 +102,9 @@ class _HomePageState extends State<HomePage> {
               const Expanded(child: Center(child: CircularProgressIndicator())),
           error: (city, error, previousData) => Expanded(
             child: ForecastErrorCard(
-              errorMessage: error.defaultMessage,
-              width: width,
+              error: error,
+              city: city,
+              onRetry: () => context.read<HomePageCubit>().getWeather(city),
             ),
           ),
           loaded: (city, weatherData) => Expanded(
